@@ -2,7 +2,7 @@
     .name = .red,
     .version = "0.1.0",
     .fingerprint = 0xfa615f8f1a54c45b,
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0",
     .dependencies = .{
     },
     .paths = .{
