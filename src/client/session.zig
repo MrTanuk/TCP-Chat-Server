@@ -37,7 +37,7 @@ pub fn readFromServer(client: *ClientConnection) !void {
             return;
         };
 
-        try client.writer_io.print("{s}:n", .{msg});
+        try client.writer_io.print("{s}\n", .{msg});
         try client.writer_io.flush();
     }
 }
