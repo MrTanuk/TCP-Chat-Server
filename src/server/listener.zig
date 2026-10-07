@@ -18,6 +18,8 @@ pub fn init(allocator: Allocator, io: std.Io, server: *std.Io.net.Server) TcpLis
 /// Waiting for a client socket to create a `ServerConnection` instance,
 /// saving in a list in `ChatHub` instance and running the `ServerConnection` instance.
 pub fn listen(self: *TcpListener, chat_hub: *ChatHub) !void {
+    std.log.info("Server listening at {f}\n", .{self.server.socket.address});
+
     while (true) {
         // stream variable life  is handle by session
         const stream = try self.server.accept(self.io);

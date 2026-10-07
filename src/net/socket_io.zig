@@ -1,4 +1,4 @@
-const SocketIO = @This();
+pub const SocketIo = @This();
 
 const std = @import("std");
 

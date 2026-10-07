@@ -1,8 +1,8 @@
 const ServerConnection = @This();
 
 const std = @import("std");
-const SocketIO = @import("socket_io");
 const ChatHub = @import("chat_hub.zig");
+const SocketIo = @import("net").socket_io.SocketIo;
 
 const Allocator = std.mem.Allocator;
 
@@ -13,7 +13,7 @@ allocator: Allocator,
 chat_hub: *ChatHub,
 
 sock_stream: std.Io.net.Stream,
-sock_io: SocketIO,
+sock_io: SocketIo,
 
 pub fn create(allocator: Allocator, io: std.Io, chat_hub: *ChatHub, sock_stream: std.Io.net.Stream, id: usize) !*ServerConnection {
     var stream = try allocator.create(ServerConnection);
@@ -40,7 +40,7 @@ pub fn create(allocator: Allocator, io: std.Io, chat_hub: *ChatHub, sock_stream:
 pub fn run(self: *ServerConnection) !void {
     while (true) {
         const msg = self.sock_io.reader_stream.takeDelimiterInclusive('\n') catch {
-            self.chat_hub.removeClient(self);
+            _ = try self.chat_hub.removeClient(self);
             self.destroy();
             return;
         };

@@ -4,8 +4,8 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const socket_mod = b.addModule("socket_io", .{
-        .root_source_file = b.path("src/net/socket_io.zig"),
+    const net_mod = b.addModule("net", .{
+        .root_source_file = b.path("src/net/net.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -18,8 +18,8 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .imports = &.{
                 .{
-                    .name = "socket_io",
-                    .module = socket_mod,
+                    .name = "net",
+                    .module = net_mod,
                 },
             },
         }),
@@ -34,8 +34,8 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .imports = &.{
                 .{
-                    .name = "socket_io",
-                    .module = socket_mod,
+                    .name = "net",
+                    .module = net_mod,
                 },
             },
         }),

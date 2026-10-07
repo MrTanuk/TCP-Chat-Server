@@ -1,14 +1,15 @@
 const ClientConnection = @This();
 
 const std = @import("std");
-const SocketIO = @import("socket_io");
+const SocketIo = @import("net").socket_io.SocketIo;
 
 const Allocator = std.mem.Allocator;
 
 io: std.Io,
 allocator: Allocator,
+
 sock_stream: std.Io.net.Stream,
-sock_io: SocketIO, // Contains reader_stream and writer_stream
+sock_io: SocketIo, // Contains reader_stream and writer_stream
 
 stdin_io: std.Io.File.Reader,
 stdout_io: std.Io.File.Writer,
@@ -24,21 +25,20 @@ stdout_buf: [2048]u8 = undefined,
 pub fn writeToServer(client: *ClientConnection) !void {
     while (true) {
         const msg = try client.reader_io.takeDelimiterInclusive('\n');
-        try client.sock_io.writer_stream.writeAll(msg);
-        try client.sock_io.writer_stream.flush();
+        if (msg.len == 0) continue;
+
+        client.sock_io.writer_stream.writeAll(msg) catch return;
+        client.sock_io.writer_stream.flush() catch return;
     }
 }
 
 /// Receive the message from server and print it (socket -> stdout).
 pub fn readFromServer(client: *ClientConnection) !void {
     while (true) {
-        const msg = client.sock_io.reader_stream.takeDelimiterInclusive('\n') catch {
-            client.destroy();
-            return;
-        };
+        const msg = client.sock_io.reader_stream.takeDelimiterInclusive('\n') catch return;
 
-        try client.writer_io.print("{s}", .{msg});
-        try client.writer_io.flush();
+        _ = try client.writer_io.print("{s}", .{msg});
+        _ = try client.writer_io.flush();
     }
 }
 
