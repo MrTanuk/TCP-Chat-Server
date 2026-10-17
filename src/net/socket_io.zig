@@ -1,5 +1,3 @@
-pub const SocketIo = @This();
-
 const std = @import("std");
 
 read_state: std.Io.net.Stream.Reader,

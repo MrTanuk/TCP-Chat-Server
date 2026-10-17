@@ -1,7 +1,7 @@
 const std = @import("std");
 
 const ClientSession = @import("session.zig");
-const address = @import("net").address;
+const address = @import("Net").address;
 
 pub fn main(init: std.process.Init) !void {
     var threaded = std.Io.Threaded.init(init.gpa, .{});

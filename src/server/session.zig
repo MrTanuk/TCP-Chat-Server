@@ -2,7 +2,7 @@ const ServerConnection = @This();
 
 const std = @import("std");
 const ChatHub = @import("chat_hub.zig");
-const SocketIo = @import("net").socket_io.SocketIo;
+const SocketIo = @import("Net").SocketIo;
 
 const Allocator = std.mem.Allocator;
 

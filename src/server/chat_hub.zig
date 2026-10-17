@@ -8,6 +8,7 @@ const Allocator = std.mem.Allocator;
 
 allocator: Allocator,
 io: std.Io,
+mutex: std.Io.Mutex,
 
 num_ids: usize,
 list_sessions: std.ArrayList(*ServerConnection),
@@ -18,6 +19,8 @@ pub fn create(allocator: Allocator, io: std.Io) !*ChatHub {
 
     status_server.allocator = allocator;
     status_server.io = io;
+    status_server.mutex = .init;
+
     status_server.list_sessions = .empty;
 
     status_server.num_ids = 0;
@@ -38,6 +41,9 @@ pub fn appendClient(self: *ChatHub, session: *ServerConnection) !void {
 /// Receive the msg from a `ServerConnection` and the instance of itself
 /// and print msg for all the `ServerConnection` instances saved in `list_sessions`
 pub fn writeAllSockets(self: *ChatHub, msg: []u8, session: *ServerConnection) !void {
+    try self.mutex.lock(self.io);
+    defer self.mutex.unlock(self.io);
+
     const msg_ = msg[0 .. msg.len - 1]; // By the moment. It will change
     log.info("Client {d}: {s}", .{ session.id, msg_ });
 

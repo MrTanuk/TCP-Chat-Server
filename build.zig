@@ -4,7 +4,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const net_mod = b.addModule("net", .{
+    const net_mod = b.addModule("Net", .{
         .root_source_file = b.path("src/net/net.zig"),
         .target = target,
         .optimize = optimize,
@@ -18,7 +18,7 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .imports = &.{
                 .{
-                    .name = "net",
+                    .name = "Net",
                     .module = net_mod,
                 },
             },
@@ -34,7 +34,7 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
             .imports = &.{
                 .{
-                    .name = "net",
+                    .name = "Net",
                     .module = net_mod,
                 },
             },

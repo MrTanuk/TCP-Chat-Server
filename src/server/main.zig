@@ -2,10 +2,7 @@ const std = @import("std");
 
 const TcpListener = @import("listener.zig");
 const ChatHub = @import("chat_hub.zig");
-const address = @import("net").address;
-
-const Stream = std.Io.net.Stream;
-const Allocator = std.mem.Allocator;
+const address = @import("Net").address;
 
 pub fn main(init: std.process.Init) !void {
     var threaded = std.Io.Threaded.init(init.gpa, .{});
@@ -18,10 +15,10 @@ pub fn main(init: std.process.Init) !void {
 
     const addr_mode = try address.chooseMode(io);
     const addr = try address.resolveAddress(io, addr_mode, 8080);
-    // La vida del server pasa a
-    // server variable now is handled by TcpListener
+
     var server = try addr.listen(io, .{ .mode = .stream, .reuse_address = true });
 
+    // server variable now is handled by TcpListener
     var tcp_listener = TcpListener.init(init.gpa, io, &server);
     defer tcp_listener.deinit();
 

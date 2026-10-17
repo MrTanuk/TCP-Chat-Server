@@ -1,7 +1,7 @@
 const ClientConnection = @This();
 
 const std = @import("std");
-const SocketIo = @import("net").socket_io.SocketIo;
+const SocketIo = @import("Net").SocketIo;
 
 const Allocator = std.mem.Allocator;
 
@@ -25,7 +25,7 @@ stdout_buf: [2048]u8 = undefined,
 pub fn writeToServer(client: *ClientConnection) !void {
     while (true) {
         const msg = try client.reader_io.takeDelimiterInclusive('\n');
-        if (msg.len == 0) continue;
+        if (msg.len == 1) continue;
 
         client.sock_io.writer_stream.writeAll(msg) catch return;
         client.sock_io.writer_stream.flush() catch return;
